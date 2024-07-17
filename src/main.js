@@ -19,11 +19,11 @@ elements.submitBtn.addEventListener(`click`, event => {
   } else {
     elements.submitBtn.disabled = false;
   }
-  fetchImages(userInputValue).then(request => {
-    if (!request || request.length === 0) {
+  fetchImages(userInputValue).then(res => {
+    if (!res || res.length === 0) {
       noImagesMessage();
     } else {
-      console.log(request);
+      console.log(res);
     }
   });
 });
