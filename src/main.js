@@ -34,15 +34,22 @@ elements.submitBtn.addEventListener(`click`, event => {
     comments,
     downloads,
   }) {
-    return `<div class="image-card">
-    <img src="${largeImageURL}" alt= "${tags}" />
-    <div class="info">
-    <p>Likes: ${likes}</p>
-    <p>Views: ${views}</p>
-    <p>Comments: ${comments}</p>
-    <p>Downloads: ${downloads}</p>
+    return `
+  <div class = "image-container">
+    <li class="image-item">
+      <img src="${webformatURL}" alt="${tags}" />
+    </li>
+    <div class ="">
+      <li class="image-item-info">
+        <p><span class = "comment-head">Likes</span> ${likes}</p>
+        <p><span class = "comment-head">Views</span> ${views}</p>
+        <p><span class = "comment-head">Comments</span> ${comments}</p>
+        <p><span class = "comment-head">Downloads</span> ${downloads}</p>
+      </li>
     </div>
-  </div>`;
+  </div>
+    
+  `;
   }
 
   function processImages(res) {
