@@ -1,17 +1,19 @@
-import{i as d}from"./assets/vendor-ad859c2f.js";(function(){const n=document.createElement("link").relList;if(n&&n.supports&&n.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))a(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const r of t.addedNodes)r.tagName==="LINK"&&r.rel==="modulepreload"&&a(r)}).observe(document,{childList:!0,subtree:!0});function o(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?t.credentials="include":e.crossOrigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function a(e){if(e.ep)return;e.ep=!0;const t=o(e);fetch(e.href,t)}})();const g="44952732-afe4551e0894d66c0b6ee4476";function y(i){const n=`https://pixabay.com/api/?key=${g}&q=${i}&image_type=photo&orientation=horizontal&safesearch=true`;return fetch(n).then(o=>{if(!o.ok)throw new Error(o.status);return o.json()})}function h(){d.show({message:"Sorry, there are no images matching your search query. Please try again!"})}const s={submitBtn:document.querySelector(".js-submit-btn"),form:document.querySelector("form[data-form]"),input:document.querySelector("input[data-input]"),gallery:document.querySelector(".gallery")};s.submitBtn.addEventListener("click",i=>{i.preventDefault();const n=s.input.value.trim(),o=s.input.value;function a(){return n===""?(s.submitBtn.disabled=!0,console.log("input is empty"),h(),!0):(s.submitBtn.disabled=!1,!1)}function e({webformatURL:r,largeImageURL:l,tags:c,likes:u,views:m,comments:p,downloads:f}){return`
-  <div class = "image-container">
+import{i as b,S as v}from"./assets/vendor-0fc460d7.js";(function(){const s=document.createElement("link").relList;if(s&&s.supports&&s.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))c(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const n of t.addedNodes)n.tagName==="LINK"&&n.rel==="modulepreload"&&c(n)}).observe(document,{childList:!0,subtree:!0});function o(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?t.credentials="include":e.crossOrigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function c(e){if(e.ep)return;e.ep=!0;const t=o(e);fetch(e.href,t)}})();const L="44952732-afe4551e0894d66c0b6ee4476";function I(a){const s=`https://pixabay.com/api/?key=${L}&q=${a}&image_type=photo&orientation=horizontal&safesearch=true`;return fetch(s).then(o=>{if(!o.ok)throw new Error(o.status);return o.json()})}function S(){b.show({message:"Sorry, there are no images matching your search query. Please try again!"})}const r={submitBtn:document.querySelector(".js-submit-btn"),form:document.querySelector("form[data-form]"),input:document.querySelector("input[data-input]"),gallery:document.querySelector(".gallery"),loader:document.querySelector(".loader")},$=new v(".image-link",{captions:!0,captionSelector:"img",captionsData:"alt",captionType:"attr",captionPosition:"bottom",captionDelay:250});function f(a){a.preventDefault();const s=r.input.value.trim(),o=r.input.value;function c(){return s===""?(r.submitBtn.disabled=!0,console.log("input is empty"),S(),!0):(r.submitBtn.disabled=!1,!1)}function e({webformatURL:i,largeImageURL:m,tags:l,likes:d,views:g,comments:h,downloads:y}){return`
+  <div class ="image-container">
+    <a href="${m}" class = "image-link">
+
     <li class="image-item">
-      <img src="${r}" alt="${c}" />
+      <img src="${i}" alt="${l}" />
     </li>
     <div class ="">
       <li class="image-item-info">
-        <p><span class = "comment-head">Likes</span> ${u}</p>
-        <p><span class = "comment-head">Views</span> ${m}</p>
-        <p><span class = "comment-head">Comments</span> ${p}</p>
-        <p><span class = "comment-head">Downloads</span> ${f}</p>
+        <p><span class = "comment-head">Likes</span> ${d}</p>
+        <p><span class = "comment-head">Views</span> ${g}</p>
+        <p><span class = "comment-head">Comments</span> ${h}</p>
+        <p><span class = "comment-head">Downloads</span> ${y}</p>
       </li>
     </div>
+    </a>
   </div>
-    
-  `}function t(r){const l=r.hits;let c="";l.forEach(u=>{c+=e(u)}),s.gallery.innerHTML=c}if(s.gallery.innerHTML="",s.form.reset(),a()){s.submitBtn.disabled=!1;return}y(o).then(t).catch(r=>{console.error("No Images",r)})});
+  `}function t(i){const m=i.hits;let l="";m.forEach(d=>{l+=e(d)}),r.gallery.innerHTML=l,$.refresh()}if(r.gallery.innerHTML="",r.form.reset(),c()){r.submitBtn.disabled=!1;return}let n=!1,p=!1;r.loader.classList.add("active");const u=()=>{n&&p&&(r.loader.classList.remove("active"),r.submitBtn.disabled=!1)};I(o).then(t).then(()=>{n=!0,u()}).catch(i=>{console.error("No Images",i),n=!0,u()}),setTimeout(()=>{p=!0,u()},2e3)}r.submitBtn.addEventListener("click",f);r.form.addEventListener("submit",f);
 //# sourceMappingURL=commonHelpers.js.map
