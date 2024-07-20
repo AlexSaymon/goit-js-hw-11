@@ -1,3 +1,6 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+import './css/loader.css';
 import { fetchImages } from './js/pixabay-api.js';
 import { noImagesMessage } from './js/render-functions.js';
 
@@ -6,9 +9,19 @@ const elements = {
   form: document.querySelector(`form[data-form]`),
   input: document.querySelector(`input[data-input]`),
   gallery: document.querySelector(`.gallery`),
+  loader: document.querySelector(`.loader`),
 };
 
-elements.submitBtn.addEventListener(`click`, event => {
+const lightbox = new SimpleLightbox('.image-link', {
+  captions: true,
+  captionSelector: `img`,
+  captionsData: `alt`,
+  captionType: `attr`,
+  captionPosition: `bottom`,
+  captionDelay: 250,
+});
+
+function handleFormSubmit(event) {
   event.preventDefault();
 
   const trimmedInput = elements.input.value.trim();
@@ -35,7 +48,9 @@ elements.submitBtn.addEventListener(`click`, event => {
     downloads,
   }) {
     return `
-  <div class = "image-container">
+  <div class ="image-container">
+    <a href="${largeImageURL}" class = "image-link">
+
     <li class="image-item">
       <img src="${webformatURL}" alt="${tags}" />
     </li>
@@ -47,8 +62,8 @@ elements.submitBtn.addEventListener(`click`, event => {
         <p><span class = "comment-head">Downloads</span> ${downloads}</p>
       </li>
     </div>
+    </a>
   </div>
-    
   `;
   }
 
@@ -59,6 +74,7 @@ elements.submitBtn.addEventListener(`click`, event => {
       imageMarkup += createImageCard(image);
     });
     elements.gallery.innerHTML = imageMarkup;
+    lightbox.refresh();
   }
 
   elements.gallery.innerHTML = '';
@@ -69,10 +85,35 @@ elements.submitBtn.addEventListener(`click`, event => {
     return;
   }
 
+  let imagesFetched = false;
+  let timeoutCompleted = false;
+
+  elements.loader.classList.add('active');
+
+  const checkAndRemoveLoader = () => {
+    if (imagesFetched && timeoutCompleted) {
+      elements.loader.classList.remove('active');
+      elements.submitBtn.disabled = false;
+    }
+  };
+
   fetchImages(userInputValue)
     .then(processImages)
-
+    .then(() => {
+      imagesFetched = true;
+      checkAndRemoveLoader();
+    })
     .catch(error => {
       console.error(`No Images`, error);
+      imagesFetched = true;
+      checkAndRemoveLoader();
     });
-});
+
+  setTimeout(() => {
+    timeoutCompleted = true;
+    checkAndRemoveLoader();
+  }, 2000);
+}
+
+elements.submitBtn.addEventListener(`click`, handleFormSubmit);
+elements.form.addEventListener(`submit`, handleFormSubmit);
