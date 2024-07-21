@@ -2,6 +2,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { fetchImages } from './js/pixabay-api.js';
 import { noImagesMessage } from './js/render-functions.js';
+import './css/header.css';
 
 const elements = {
   submitBtn: document.querySelector(`.js-submit-btn`),
