@@ -1,6 +1,5 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import './css/loader.css';
 import { fetchImages } from './js/pixabay-api.js';
 import { noImagesMessage } from './js/render-functions.js';
 
@@ -9,7 +8,7 @@ const elements = {
   form: document.querySelector(`form[data-form]`),
   input: document.querySelector(`input[data-input]`),
   gallery: document.querySelector(`.gallery`),
-  loader: document.querySelector(`.loader`),
+  loading: document.querySelector(`.loadingText`),
 };
 
 const lightbox = new SimpleLightbox('.image-link', {
@@ -67,6 +66,8 @@ function handleFormSubmit(event) {
   `;
   }
 
+  const loadingText = document.getElementById('loadingText');
+
   function processImages(res) {
     const images = res.hits;
     let imageMarkup = '';
@@ -85,33 +86,17 @@ function handleFormSubmit(event) {
     return;
   }
 
-  let imagesFetched = false;
-  let timeoutCompleted = false;
-
-  elements.loader.classList.add('active');
-
-  const checkAndRemoveLoader = () => {
-    if (imagesFetched && timeoutCompleted) {
-      elements.loader.classList.remove('active');
-      elements.submitBtn.disabled = false;
-    }
-  };
-
-  fetchImages(userInputValue)
-    .then(processImages)
-    .then(() => {
-      imagesFetched = true;
-      checkAndRemoveLoader();
-    })
-    .catch(error => {
-      console.error(`No Images`, error);
-      imagesFetched = true;
-      checkAndRemoveLoader();
-    });
+  elements.loading.style.display = 'block';
 
   setTimeout(() => {
-    timeoutCompleted = true;
-    checkAndRemoveLoader();
+    fetchImages(userInputValue)
+      .then((elements.loading.style.display = 'none'))
+      .then(processImages)
+      .then((elements.gallery.style.display = 'flex'))
+
+      .catch(error => {
+        console.error(`No Images`, error);
+      });
   }, 2000);
 }
 
