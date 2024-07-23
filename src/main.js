@@ -1,8 +1,9 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { fetchImages } from './js/pixabay-api.js';
-import { noImagesMessage } from './js/render-functions.js';
+import { noApiResponse, noImagesMessage } from './js/render-functions.js';
 import './css/header.css';
+import { createImageCard } from './js/render-functions.js';
 
 const elements = {
   submitBtn: document.querySelector(`.js-submit-btn`),
@@ -38,35 +39,6 @@ function handleFormSubmit(event) {
     return false;
   }
 
-  function createImageCard({
-    webformatURL,
-    largeImageURL,
-    tags,
-    likes,
-    views,
-    comments,
-    downloads,
-  }) {
-    return `
-  <div class ="image-container">
-    <a href="${largeImageURL}" class = "image-link">
-
-    <li class="image-item">
-      <img src="${webformatURL}" alt="${tags}" />
-    </li>
-    <div class ="">
-      <li class="image-item-info">
-        <p><span class = "comment-head">Likes</span> ${likes}</p>
-        <p><span class = "comment-head">Views</span> ${views}</p>
-        <p><span class = "comment-head">Comments</span> ${comments}</p>
-        <p><span class = "comment-head">Downloads</span> ${downloads}</p>
-      </li>
-    </div>
-    </a>
-  </div>
-  `;
-  }
-
   const loadingText = document.getElementById('loadingText');
 
   function processImages(res) {
@@ -89,17 +61,25 @@ function handleFormSubmit(event) {
 
   elements.loading.style.display = 'block';
 
-  setTimeout(() => {
-    fetchImages(userInputValue)
-      .then((elements.loading.style.display = 'none'))
-      .then(processImages)
-      .then((elements.gallery.style.display = 'flex'))
-
-      .catch(error => {
-        console.error(`No Images`, error);
+  fetchImages(userInputValue)
+    .then(res => {
+      setTimeout(() => {
+        elements.loading.style.display = 'none';
+        if (res.hits.length === 0) {
+          noApiResponse();
+          return;
+        }
+        processImages(res);
+        elements.gallery.style.display = 'flex';
+      }, 1000);
+    })
+    .catch(error => {
+      elements.loading.style.display = 'none';
+      iziToast.error({
+        title: 'Error',
+        message: 'No Images found or an error occurred while fetching images.',
       });
-  }, 2000);
+    });
 }
 
-elements.submitBtn.addEventListener(`click`, handleFormSubmit);
 elements.form.addEventListener(`submit`, handleFormSubmit);
